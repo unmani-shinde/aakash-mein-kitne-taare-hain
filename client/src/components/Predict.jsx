@@ -12,8 +12,7 @@ export default function Predict({ walletAddr }) {
     const handlePrediction = async() =>{
         isPredictionset.current = false
         const json_data = await handleTransactionsRetrieval(walletAddr);
-        console.log(json_data);
-        
+        console.log(json_data);        
     }
 
 
