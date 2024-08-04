@@ -1,7 +1,7 @@
 import { Button } from "flowbite-react";
 import { useState,useRef } from "react";
 
-import { handleTransactionsRetrieval } from "../core-fetch-calls/transactions";
+import { handleTransactionsRetrieval } from "../fetch-data/core/transactions";
 
 export default function Predict({ walletAddr }) {
     const [prediction, setPrediction] = useState("");
@@ -12,7 +12,7 @@ export default function Predict({ walletAddr }) {
     const handlePrediction = async() =>{
         isPredictionset.current = false
         const json_data = await handleTransactionsRetrieval(walletAddr);
-        console.log(json_data);        
+        //console.log(json_data);        
     }
 
 

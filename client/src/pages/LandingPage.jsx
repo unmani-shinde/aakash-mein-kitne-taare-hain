@@ -1,6 +1,7 @@
 import { ConnectKitButton } from "connectkit";
 import { useAccount } from "wagmi";
 import Predict from "../components/Predict";
+import HelloWorld from "../components/HelloWorldTest";
 // import SIWE from "../components/SIWE";
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
 
     
     
-    {account.isConnected?<div><p>Connected</p><Predict walletAddr={account.address.toString()} /></div>:<ConnectKitButton/>}
+    {account.isConnected?<div><p>Connected Address: {account.address}</p><Predict walletAddr={account.address.toString()} /><HelloWorld/></div>:<ConnectKitButton/>}
     
     
     </div>)

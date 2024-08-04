@@ -35,8 +35,9 @@ export const handleTransactionsRetrieval = async (walletAddr) => {
         // Iterate through transactions
         for (const txn of data.result) {
             // Convert to lowercase for comparison
-            const toAddressLower = txn.to.toLowerCase();
+            const toAddressLower = txn.to?.toLowerCase();
             const walletAddrLower = walletAddr.toString().toLowerCase();
+            //console.log(txn.input);
 
             // Faucet Transfers
             if (txn.contractAddress === null) {
@@ -63,13 +64,23 @@ export const handleTransactionsRetrieval = async (walletAddr) => {
                     });
                 }
                 // Funds sent from this wallet
-                else if (txn.from.toLowerCase() === walletAddrLower) {
+                else if (txn.from.toLowerCase() === walletAddrLower && txn.input===null) {
                     json_data.transactions.push({
                         "type": "transfer_send",
                         "amount": txn.value,
                         "timestamp": txn.timeStamp,
                         "hash":txn.hash
                     });
+                }
+                else if(txn.from.toLowerCase() === walletAddrLower && txn.input!==null){
+                    json_data.interactions.push({
+                        "contract": txn.to,
+                        "action": "contract_fxn_interaction", // Determine the action based on txn details
+                        "amount": txn.value,
+                        "timestamp": txn.timeStamp,
+                        "hash":txn.hash
+                    });
+
                 }
             } else {
                 const internal_txn_result = await handleInternalTxnRetrieval(txn.hash);
@@ -90,7 +101,7 @@ export const handleTransactionsRetrieval = async (walletAddr) => {
                 });
             }
         }
-
+        console.log(json_data);
         return json_data;
     } catch (error) {
         console.error('There was an error retrieving the transactions:', error);
