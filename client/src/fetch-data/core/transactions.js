@@ -2,7 +2,7 @@ import { baseUrl } from "./baseURL";
 import { handleInternalTxnRetrieval } from "./internal_transaction";
 
 export const handleTransactionsRetrieval = async (walletAddr) => {
-    let json_data = {"user_id": walletAddr,
+    let json_data = {
 
     "transactions": [
         // {"type": "transfer", "amount": 2.5, "timestamp": "2024-01-01T12:00:00Z"},       
@@ -101,7 +101,6 @@ export const handleTransactionsRetrieval = async (walletAddr) => {
                 });
             }
         }
-        console.log(json_data);
         return json_data;
     } catch (error) {
         console.error('There was an error retrieving the transactions:', error);
