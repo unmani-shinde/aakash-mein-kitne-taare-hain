@@ -5,12 +5,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: OracularProtocol
+    name: CookieContract
     network: arbitrum-sepolia
     source:
-      address: "0x1446Cf26948333B25719Cc5c7D096C9CD0886758"
-      abi: OracularProtocol
-      startBlock: 69299269
+      address: "0x8F0BCDBf340CB80dB9fc703eC8B9cF7fC3D7C8cD"
+      abi: CookieContract
+      startBlock: 69355724
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -18,27 +18,18 @@ dataSources:
       entities:
         - Approval
         - ApprovalForAll
-        - BatchMetadataUpdate
-        - CookieMinted
-        - CookieSentToGossip
-        - MetadataUpdate
+        - ISpeculate
         - Transfer
       abis:
-        - name: OracularProtocol
-          file: ./abis/OracularProtocol.json
+        - name: CookieContract
+          file: ./abis/CookieContract.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
-        - event: BatchMetadataUpdate(uint256,uint256)
-          handler: handleBatchMetadataUpdate
-        - event: CookieMinted(address,uint256)
-          handler: handleCookieMinted
-        - event: CookieSentToGossip(address,uint256,address)
-          handler: handleCookieSentToGossip
-        - event: MetadataUpdate(uint256)
-          handler: handleMetadataUpdate
+        - event: ISpeculate(address,bool)
+          handler: handleISpeculate
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/oracular-protocol.ts
+      file: ./src/cookie-contract.ts

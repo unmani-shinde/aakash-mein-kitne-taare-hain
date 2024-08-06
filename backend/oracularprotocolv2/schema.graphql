@@ -18,37 +18,10 @@ type ApprovalForAll @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type BatchMetadataUpdate @entity(immutable: true) {
+type ISpeculate @entity(immutable: true) {
   id: Bytes!
-  _fromTokenId: BigInt! # uint256
-  _toTokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CookieMinted @entity(immutable: true) {
-  id: Bytes!
-  tokenOwner: Bytes! # address
-  tokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CookieSentToGossip @entity(immutable: true) {
-  id: Bytes!
-  tokenOwner: Bytes! # address
-  tokenId: BigInt! # uint256
-  gossipNetworkId: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type MetadataUpdate @entity(immutable: true) {
-  id: Bytes!
-  _tokenId: BigInt! # uint256
+  speculator: Bytes! # address
+  speculation: Boolean! # bool
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

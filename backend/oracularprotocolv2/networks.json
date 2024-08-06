@@ -1,8 +1,8 @@
 {
   "arbitrum-sepolia": {
-    "OracularProtocol": {
-      "address": "0x1446Cf26948333B25719Cc5c7D096C9CD0886758",
-      "startBlock": 69299269
+    "CookieContract": {
+      "address": "0x8F0BCDBf340CB80dB9fc703eC8B9cF7fC3D7C8cD",
+      "startBlock": 69355724
     }
   }
 }
