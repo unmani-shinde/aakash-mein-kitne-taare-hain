@@ -45,6 +45,6 @@ export default function Predict({ walletAddr }) {
 
 
 
-    return(<Button onClick={handlePrediction}>Click to Predict 🪄</Button>)
+    return(<Button className="mr-10" onClick={handlePrediction}>Click to Predict 🪄</Button>)
     
 }
