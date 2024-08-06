@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Create2.sol";
 import "contracts/Cookie.sol";
 
 contract OracularProtocol is ERC721, ERC721URIStorage {
@@ -31,8 +32,11 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
 
     function sendCookieToGossipNetwork(uint256 cookieID) external {
         require(Cookies[cookieID]==address(0x00),"This cookie already exists on the Gossip Network!");
-        ERC721 newContract = new Cookie(cookieID,payable (address(msg.sender)));
-        Cookies[cookieID] = address(newContract);
+        bytes32 _salt = keccak256(abi.encodePacked(block.timestamp, msg.sender));
+        address gossipNetworkId = Create2.deploy(0,_salt, abi.encodePacked(type(Cookie).creationCode, abi.encode(cookieID,payable (address(msg.sender))))
+        );
+        safeTransferFrom(msg.sender,gossipNetworkId, cookieID);
+        Cookies[cookieID] = gossipNetworkId;
         emit CookieSentToGossip(msg.sender,cookieID,Cookies[cookieID]);
     }
 

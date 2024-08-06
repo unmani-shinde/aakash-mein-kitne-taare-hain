@@ -3,8 +3,9 @@
 pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-contract Cookie is ERC721,ERC721Enumerable{
+contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
 
     uint256 cookieId;
     address payable cookieOwner;
@@ -97,6 +98,10 @@ contract Cookie is ERC721,ERC721Enumerable{
         override(ERC721, ERC721Enumerable)
     {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    function onERC721Received(address, address, uint256, bytes calldata) external virtual returns (bytes4) {
+        return this.onERC721Received.selector;
     }
     
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function CookieMint({ walletAddr }) {
 
-    const { writeContract } = useWriteContract()
+    const { writeContract,writeContractAsync } = useWriteContract()
     const [ metadata,setMetadata ] = useState();
 
     const handleMint = () => {
@@ -18,12 +18,14 @@ export default function CookieMint({ walletAddr }) {
        
     }
 
-    const handleSendCookietoNetwork = () =>{
-        writeContract({
+    const handleSendCookietoNetwork = async() =>{
+        await writeContractAsync({
             abi:OracularProtocolContract.abi,
             address:OracleProtocolAddress,
             functionName:'sendCookieToGossipNetwork',
             args:[BigInt(1)]
+        }).then((res)=>{
+            console.log(res);
         })
     }
 
