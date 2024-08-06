@@ -11,7 +11,7 @@ module.exports = {
       }
     }
   },
-  defaultNetwork: 'core',
+  defaultNetwork: 'polygonAmoy',
   networks:{
     hardhat:{},
     core: {
@@ -20,14 +20,22 @@ module.exports = {
       chainId:1115
     },
     arbitrumSepolia:{
-      url:`https://arbitrum-sepolia.infura.io/v3/${process.env.ORACULAR_PROTOCOL_INFURA_API_KEY.toString()}`,
-      accounts:[process.env.DEPLOYER_PRIVATE_KEY.toString()],
+      url:`https://sepolia-rollup.arbitrum.io/rpc`,
+      accounts:[process.env.DEPLOYER_PRIVATE_KEY_NEXT.toString()],
       chainId:421614
     },
     polygonAmoy:{
-      url:`https://polygon-amoy.infura.io/v3/${process.env.ORACULAR_PROTOCOL_INFURA_API_KEY.toString()}`,
-      accounts:[process.env.DEPLOYER_PRIVATE_KEY.toString()],
+      url:`https://rpc-amoy.polygon.technology/`,
+      accounts:[process.env.DEPLOYER_PRIVATE_KEY_NEXT.toString()],
       chainId:80002
     }
-  }
+  },
+  paths: {
+    sources: './contracts',
+    cache: './cache',
+    artifacts: './artifacts',
+ },
+ mocha: {
+    timeout: 20000,
+ },
 };
