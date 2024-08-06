@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const { default: daisyui } = require('daisyui');
 const flowbite = require("flowbite-react/tailwind");
 module.exports = {
   content: [
@@ -7,6 +8,8 @@ module.exports = {
     flowbite.content(),],
   theme: {
     extend: {},
+    daisyui:{
+      themes: ["cupcake"]},
   },
   plugins: [
     flowbite.plugin(),

@@ -8,7 +8,7 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { Approval } from "../generated/schema"
-import { Approval as ApprovalEvent } from "../generated/Oracular_Protocol/Oracular_Protocol"
+import { Approval as ApprovalEvent } from "../generated/OracularProtocol/OracularProtocol"
 import { handleApproval } from "../src/oracular-protocol"
 import { createApprovalEvent } from "./oracular-protocol-utils"
 

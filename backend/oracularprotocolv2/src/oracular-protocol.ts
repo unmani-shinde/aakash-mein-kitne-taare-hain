@@ -6,7 +6,7 @@ import {
   CookieSentToGossip as CookieSentToGossipEvent,
   MetadataUpdate as MetadataUpdateEvent,
   Transfer as TransferEvent
-} from "../generated/Oracular_Protocol/Oracular_Protocol"
+} from "../generated/OracularProtocol/OracularProtocol"
 import {
   Approval,
   ApprovalForAll,

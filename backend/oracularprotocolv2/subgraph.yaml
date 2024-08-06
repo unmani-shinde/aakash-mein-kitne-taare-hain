@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Oracular_Protocol
+    name: OracularProtocol
     network: arbitrum-sepolia
     source:
       address: "0x1446Cf26948333B25719Cc5c7D096C9CD0886758"
-      abi: Oracular_Protocol
+      abi: OracularProtocol
       startBlock: 69299269
     mapping:
       kind: ethereum/events
@@ -24,8 +24,8 @@ dataSources:
         - MetadataUpdate
         - Transfer
       abis:
-        - name: Oracular_Protocol
-          file: ./abis/Oracular_Protocol.json
+        - name: OracularProtocol
+          file: ./abis/OracularProtocol.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval

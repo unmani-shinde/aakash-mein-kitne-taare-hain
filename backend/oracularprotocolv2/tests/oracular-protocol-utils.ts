@@ -8,7 +8,7 @@ import {
   CookieSentToGossip,
   MetadataUpdate,
   Transfer
-} from "../generated/Oracular_Protocol/Oracular_Protocol"
+} from "../generated/OracularProtocol/OracularProtocol"
 
 export function createApprovalEvent(
   owner: Address,
