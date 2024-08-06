@@ -42,3 +42,31 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/oracular-protocol.ts
+templates:
+  - name: CookieContract
+    kind: ethereum/contract
+    network: arbitrum-sepolia
+    source:
+      abi: CookieContract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/cookie-contract.ts
+      entities:
+        - Approval
+        - ApprovalForAll
+        - ISpeculate
+        - Transfer
+      abis:
+        - name: CookieContract
+          file: ./abis/CookieContract.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: ISpeculate(address,bool)
+          handler: handleISpeculate
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer

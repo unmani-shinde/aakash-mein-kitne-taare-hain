@@ -18,6 +18,24 @@ type ApprovalForAll @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type CookieContract @entity {
+  id: ID!
+  address: Bytes!
+}
+
+
+
+type ISpeculate @entity(immutable: true) {
+  id: Bytes!
+  speculator: Bytes! # address
+  speculation: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+
+
 type BatchMetadataUpdate @entity(immutable: true) {
   id: Bytes!
   _fromTokenId: BigInt! # uint256
