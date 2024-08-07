@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.16.0",
     "@tanstack/react-query": "^5.51.21",
     "connectkit": "^1.8.2",
     "dotenv": "^16.4.5",

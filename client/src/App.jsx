@@ -2,6 +2,8 @@
 import './App.css'
 import {BrowserRouter as Router, Routes,Route} from 'react-router-dom'
 import Home from './pages/LandingPage'
+import MintFortuneCookiePage from './pages/MintAFortuneCookie'
+
 
 function App() {
   
@@ -9,6 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path='/mint-a-fortune-cookie' element={<MintFortuneCookiePage/>}/>
       </Routes>
     </Router>
     

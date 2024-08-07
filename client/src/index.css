@@ -4,7 +4,10 @@
 @tailwind utilities;
 
 
-
+body{
+  /* background-color: #FAF7F5; */
+  height: 100vh;
+}
 *{
     font-family: 'Poppins',sans-serif;
 }
