@@ -42,8 +42,8 @@ export default function NavigationBar() {
           {!isConnected && <li><ConnectKitButton/></li>}
           {isConnected && (<>
             <li className="font-semibold text-md"><a href="/mint-a-fortune-cookie">Mint A Fortune Cookie</a></li>
-            <li className="font-semibold text-md"><a>The Gossip Network</a></li>
-            <li className="font-semibold text-md"><a>Find My Match</a></li>
+            <li className="font-semibold text-md"><a href="/the-gossip-network">The Gossip Network</a></li>
+            <li className="font-semibold text-md"><a href="/find-my-match">Find My Match</a></li>
           </>)}
          
         </ul>
@@ -56,8 +56,8 @@ export default function NavigationBar() {
       {/* Sidebar content here */}
       <li className="mb-4"><ConnectKitButton/></li>
       <li className="font-semibold text-lg pb-10"><a href="/mint-a-fortune-cookie">Mint A Fortune Cookie »</a></li>
-            <li className="font-semibold text-lg pb-10"><a>The Gossip Network »</a></li>
-            <li className="font-semibold text-lg pb-10"><a>Find My Match »</a></li>
+            <li className="font-semibold text-lg pb-10"><a href="/the-gossip-network">The Gossip Network »</a></li>
+            <li className="font-semibold text-lg pb-10"><a href="/find-my-match">Find My Match »</a></li>
     </ul>
   </div>
 </div>

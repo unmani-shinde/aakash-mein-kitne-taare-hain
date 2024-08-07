@@ -1,0 +1,1 @@
+export default endpoint = "https://api.studio.thegraph.com/query/85854/oracularprotocol/version/latest";

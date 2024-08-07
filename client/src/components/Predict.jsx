@@ -6,9 +6,12 @@ import { handleTransactionsRetrieval } from "../fetch-data/core/transactions";
 import { handleERC20TransfersRetrieval } from "../fetch-data/core/erc20transfers";
 import { handleTransactionsRetrieval as handleTransactionsFromArbitrumSepolia } from "../fetch-data/arbitrum-sepolia/transactions";
 import { handleERC20TransfersRetrieval as handleERC20TransfersRetrievalfromArbitrumSepolia } from "../fetch-data/arbitrum-sepolia/erc20transfers";
+import { usePrediction } from "../predictionContext";
 
 export default function Predict({ walletAddr }) {
   const { selectedChain, selectedChains } = useChain();
+  const { setParsedPredictionData } = usePrediction();  // Use the context here
+  
   const chainIds = selectedChains.map(chain => chain.chainId);
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
@@ -147,6 +150,7 @@ export default function Predict({ walletAddr }) {
         setPrediction(final_Prediction);
         const data = parsePrediction(final_Prediction);
         setParsedPrediction(data);
+        setParsedPredictionData(data);
         isPredictionLoading.current = false;
       }, 4000);
       

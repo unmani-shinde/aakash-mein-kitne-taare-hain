@@ -9,15 +9,7 @@ export default function CookieMint({ walletAddr }) {
     const { writeContract,writeContractAsync } = useWriteContract()
     const [ metadata,setMetadata ] = useState();
 
-    const handleMint = () => {
-        writeContract({
-            abi: OracularProtocolContract.abi,
-            address: OracleProtocolAddress,
-            functionName: 'mintMyCookie',
-            args:[metadata]
-        })
-       
-    }
+   
 
     const handleSendCookietoNetwork = async() =>{
         await writeContractAsync({

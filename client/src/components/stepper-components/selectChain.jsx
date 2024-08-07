@@ -2,10 +2,16 @@ import { useState, useEffect } from "react";
 import { chainDetails } from "../../../../chainDetails";
 import { useLocation } from "react-router-dom";
 import { useChain } from "../../contextManager";
+import { useSwitchChain,useAccount } from 'wagmi'
+
+
+
 
 export default function SelectChain({ isForMint }) {
   const { selectedChain, setSelectedChain, selectedChains, setSelectedChains } = useChain();
   const location = useLocation();
+  const account = useAccount();
+  const { chains, switchChain } = useSwitchChain()
 
   const handleSelectChain = (chain) => {
     if (isForMint) {
@@ -42,6 +48,9 @@ export default function SelectChain({ isForMint }) {
       <li className="text-xl font-bold mb-4">
         Select a Chain to {isForMint ? "Mint your Cookie" : "Query your Activity"}
       </li>
+      {isForMint && selectedChain.chainId!==account.chainId && <button onClick={() => switchChain({ chainId: selectedChain.chainId })}>
+          <p className="text-lg">Switch to Selected Chain</p>
+        </button>}
       {chainDetails.map((chain, index) => (
         <li key={index}>
           <div

@@ -5,6 +5,7 @@ const ChainContext = createContext();
 export const ChainProvider = ({ children }) => {
   const [selectedChain, setSelectedChain] = useState({});
   const [selectedChains, setSelectedChains] = useState([]);
+  
 
   return (
     <ChainContext.Provider value={{ selectedChain, setSelectedChain, selectedChains, setSelectedChains }}>
