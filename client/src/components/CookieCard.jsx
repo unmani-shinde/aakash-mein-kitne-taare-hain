@@ -1,19 +1,44 @@
-import { useReadContract, useWriteContract } from "wagmi";
-import { OracleProtocolAddress, OracularProtocolContract } from "../contracts/OracularProtocol";
+import { useReadContract, useAccount,useWriteContract } from "wagmi";
+import { OracleProtocolAddress, OracleProtocolAddressCore, OracularProtocolContract } from "../contracts/OracularProtocol";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { CookieContract } from "../contracts/Cookie";
 
 export default function CookieCard({ cookie }) {
   const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
+  const { chainId } = useAccount();
+
+  const { data: baseURIForCore } = useReadContract({
+    abi:OracularProtocolContract.abi,
+    address:OracleProtocolAddressCore,
+    functionName:'tokenURI',
+    args:[BigInt(cookie.tokenId)]
+  })
+
+  
+
+  if(chainId===1115){
+    cookie.uri = baseURIForCore;
+  }
 
   const { data: gossipNetworkAddress } = useReadContract({
     abi: OracularProtocolContract.abi,
-    address: OracleProtocolAddress,
+    address: chainId===1115?OracleProtocolAddressCore:OracleProtocolAddress,
     functionName: 'getCookieMap',
     args: [BigInt(cookie.tokenId)],
 
   });
+
+  const { data: details } = useReadContract({
+    abi:CookieContract.abi,
+    address:gossipNetworkAddress,
+    functionName:'totalSupply',
+    args:[]
+  })
+
+  console.log(details);
+  
 
   
   // Convert gossipNetworkAddress to string for comparison
@@ -41,7 +66,7 @@ export default function CookieCard({ cookie }) {
       try {
         await writeContractAsync({
           abi: OracularProtocolContract.abi,
-          address: OracleProtocolAddress,
+          address: chainId===1115?OracleProtocolAddressCore:OracleProtocolAddress,
           functionName: 'sendCookieToGossipNetwork',
           args: [BigInt(cookie.tokenId)]
         });

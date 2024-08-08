@@ -32,8 +32,8 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
 
     event ISpeculate(address speculator,bool speculation);
 
-    function spillTheTea() external view returns(uint256,bool,uint256){
-        return(chainId,isGossipOn,numComments);
+    function spillTheTea() external view returns(uint256,bool,uint256,uint256,address){
+        return(chainId,isGossipOn,numComments,cookieId,cookieOwner);
     }
 
     function getSupply() external view returns (uint256) {

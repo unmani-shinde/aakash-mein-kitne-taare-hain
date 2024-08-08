@@ -3,7 +3,7 @@ import { usePrediction } from "../predictionContext";
 import SelectChain from "./stepper-components/selectChain";
 import Predict from "./Predict";
 import { useAccount,useWriteContract} from "wagmi";
-import { OracularProtocolContract } from "../contracts/OracularProtocol";
+import { OracleProtocolAddressCore, OracularProtocolContract } from "../contracts/OracularProtocol";
 import { OracleProtocolAddress } from "../contracts/OracularProtocol";
 import handleFileUpload from "../pinata/handleFileUpload";
 
@@ -26,6 +26,7 @@ function MintCookie() {
   const { parsedPredictionData } = usePrediction();
   const { writeContractAsync, data,isPending,isError,isSuccess} = useWriteContract();
   const [selectedFile, setSelectedFile] = useState(null);
+  const { chainId } = useAccount();
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -49,7 +50,7 @@ function MintCookie() {
 
         await writeContractAsync({
           abi: OracularProtocolContract.abi,
-          address: OracleProtocolAddress,
+          address: chainId===421614?OracleProtocolAddress:OracleProtocolAddressCore,
           functionName: 'mintMyCookie',
           args:[metadata]
       })

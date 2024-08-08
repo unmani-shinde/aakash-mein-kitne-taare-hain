@@ -1,0 +1,47 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: OracularonArbitrumv7
+    network: arbitrum-sepolia
+    source:
+      address: "0x1b17B9fA13b2d9fc965e5bD2E03579d0C54Eb1b8"
+      abi: OracularonArbitrumv7
+      startBlock: 69829234
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - BatchMetadataUpdate
+        - CookieMinted
+        - CookieSentToGossip
+        - ISpeculated
+        - MetadataUpdate
+        - Transfer
+      abis:
+        - name: OracularonArbitrumv7
+          file: ./abis/OracularonArbitrumv7.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: BatchMetadataUpdate(uint256,uint256)
+          handler: handleBatchMetadataUpdate
+        - event: CookieMinted(address,uint256,string)
+          handler: handleCookieMinted
+        - event: CookieSentToGossip(address,uint256,address)
+          handler: handleCookieSentToGossip
+        - event: ISpeculated(address,uint256,uint256,bool)
+          handler: handleISpeculated
+        - event: MetadataUpdate(uint256)
+          handler: handleMetadataUpdate
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/oracularon-arbitrumv-7.ts
