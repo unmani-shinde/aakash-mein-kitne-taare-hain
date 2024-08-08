@@ -194,26 +194,143 @@ export default function Predict({ walletAddr }) {
         {!isPredictionLoading.current && isPredictionSet.current &&
 
         <div className="flex flex-col w-full items-center justify-center">
-            <h1><b>Your Fortune Cookie Says: </b></h1>
-            <div className="flex flex-row">
-                <h3 className="font-bold">General Overview:</h3>
-                <p>{parsedPrediction.generalOverview}</p>
-            </div>
+            <h1 style={{marginBottom:"-2vh",marginTop:'-3vh'}}><b>Your Fortune Cookie Says: </b></h1>
 
-            <div className="flex flex-row">
-                <h3 className="font-bold">Finance and Career:</h3>
-                <p>{parsedPrediction.financeAndCareer}</p>
+            <div className="overflow-x-auto">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th>
+          Sr.No.
+        </th>
+        <th>Sector</th>
+        <th>Prediction</th>
+        {/* <th>Favorite Color</th> */}
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* row 1 */}
+      <tr>
+        <th>
+          1
+        </th>
+        <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://i.pinimg.com/474x/d2/1a/3a/d21a3ac3fbd2caaff6e5c9d8800ad886.jpg"
+                  alt="General Overview" />
+              </div>
             </div>
+            <div>
+              <div className="font-bold">General Overview</div>
+              {/* <div className="text-sm opacity-50">United States</div> */}
+            </div>
+          </div>
+        </td>
+        <td>
+        {parsedPrediction.generalOverview}
+          <br />
+          <span className="badge badge-ghost badge-sm">Broad Insights into your Profile</span>
+        </td>
+        {/* <th>
+          <button className="btn btn-ghost btn-xs">details</button>
+        </th> */}
+      </tr>
+      {/* row 2 */}
+      <tr>
+        <th>
+          2
+        </th>
+        <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjI2MS1taW50eS1maW5hbmNlZG9vZGxlLTE4XzIuanBn.jpg"
+                  alt="Finance and Career Image" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold">Finance & Career</div>
+              {/* <div className="text-sm opacity-50">China</div> */}
+            </div>
+          </div>
+        </td>
+        <td>
+          {parsedPrediction.financeAndCareer}
+          <br />
+          <span className="badge badge-ghost badge-sm">Wealth and work insights</span>
+        </td>
+        {/* <th>
+          <button className="btn btn-ghost btn-xs">details</button>
+        </th> */}
+      </tr>
+      {/* row 3 */}
+      <tr>
+        <th>
+          3
+        </th>
+        <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://static.vecteezy.com/system/resources/thumbnails/013/215/199/small/happy-woman-use-water-can-watering-seedling-in-brain-improving-creativity-thinking-smiling-girl-involved-in-self-improvement-process-mindset-and-mental-growth-illustration-free-vector.jpg"
+                  alt="Personal Growth & Innovation" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold">Personal Growth & Innovation</div>
+              {/* <div className="text-sm opacity-50">Russia</div> */}
+            </div>
+          </div>
+        </td>
+        <td>
+        {parsedPrediction.personalGrowth}
+          <br />
+          <span className="badge badge-ghost badge-sm">Personal Evolution Insights</span>
+        </td>
+        {/* <th>
+          <button className="btn btn-ghost btn-xs">details</button>
+        </th> */}
+      </tr>
+      {/* row 4 */}
+      <tr>
+        <th>
+         4
+        </th>
+        <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://static.vecteezy.com/system/resources/previews/006/801/180/original/social-participation-illustration-vector.jpg"
+                  alt="Social & Relationship Dynamics" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold">Social & Relationship Dynamics</div>
+              {/* <div className="text-sm opacity-50">Brazil</div> */}
+            </div>
+          </div>
+        </td>
+        <td>
+          {parsedPrediction.socialAndRelationships}
+          <br />
+          <span className="badge badge-ghost badge-sm">Connections in Focus</span>
+        </td>
+        {/* <th>
+          <button className="btn btn-ghost btn-xs">details</button>
+        </th> */}
+      </tr>
+    </tbody>
 
-            <div className="flex flex-row">
-                <h3 className="font-bold">Personal Growth and Innovation:</h3>
-                <p>{parsedPrediction.personalGrowth}</p>
-            </div>
-
-            <div className="flex flex-row">
-                <h3 className="font-bold">Social and Relationship Dynamics:</h3>
-                <p>{parsedPrediction.socialAndRelationships}</p>
-            </div>
+  </table>
+</div>
 
         </div>
         }

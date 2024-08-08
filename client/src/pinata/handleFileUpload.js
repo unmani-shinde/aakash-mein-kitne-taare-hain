@@ -4,6 +4,7 @@ import pinJSONToIPFS from "./pinJSONtoIPFS";
 const handleFileUpload = async (fileBlob,fileName,parsedPredictionData) => {
     try {
         console.log(fileBlob);
+        
         const image_hash = await pinFiletoIPFS(fileBlob, fileName);
 
         if (image_hash) {

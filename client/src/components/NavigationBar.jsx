@@ -44,6 +44,7 @@ export default function NavigationBar() {
             <li className="font-semibold text-md"><a href="/mint-a-fortune-cookie">Mint A Fortune Cookie</a></li>
             <li className="font-semibold text-md"><a href="/the-gossip-network">The Gossip Network</a></li>
             <li className="font-semibold text-md"><a href="/find-my-match">Find My Match</a></li>
+            <li className="font-semibold text-md"><a href="/garden-swaps">Bitcoin Holders Assemble!</a></li>
           </>)}
          
         </ul>
@@ -58,6 +59,7 @@ export default function NavigationBar() {
       <li className="font-semibold text-lg pb-10"><a href="/mint-a-fortune-cookie">Mint A Fortune Cookie »</a></li>
             <li className="font-semibold text-lg pb-10"><a href="/the-gossip-network">The Gossip Network »</a></li>
             <li className="font-semibold text-lg pb-10"><a href="/find-my-match">Find My Match »</a></li>
+            <li className="font-semibold text-lg pb-10"><a href="/garden-swaps">Bitcoin Holders Assemble! »</a></li>
     </ul>
   </div>
 </div>
