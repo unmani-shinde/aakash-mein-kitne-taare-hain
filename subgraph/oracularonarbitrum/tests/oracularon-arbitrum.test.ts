@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { Approval } from "../generated/schema"
-import { Approval as ApprovalEvent } from "../generated/ArbitrumProtocol/ArbitrumProtocol"
-import { handleApproval } from "../src/arbitrum-protocol"
-import { createApprovalEvent } from "./arbitrum-protocol-utils"
+import { Approval as ApprovalEvent } from "../generated/OracularonArbitrum/OracularonArbitrum"
+import { handleApproval } from "../src/oracularon-arbitrum"
+import { createApprovalEvent } from "./oracularon-arbitrum-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0

@@ -7,7 +7,7 @@ import {
   ISpeculated as ISpeculatedEvent,
   MetadataUpdate as MetadataUpdateEvent,
   Transfer as TransferEvent
-} from "../generated/ArbitrumProtocol/ArbitrumProtocol"
+} from "../generated/OracularonArbitrum/OracularonArbitrum"
 import {
   Approval,
   ApprovalForAll,

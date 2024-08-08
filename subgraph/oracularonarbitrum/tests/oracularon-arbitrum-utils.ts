@@ -9,7 +9,7 @@ import {
   ISpeculated,
   MetadataUpdate,
   Transfer
-} from "../generated/ArbitrumProtocol/ArbitrumProtocol"
+} from "../generated/OracularonArbitrum/OracularonArbitrum"
 
 export function createApprovalEvent(
   owner: Address,
