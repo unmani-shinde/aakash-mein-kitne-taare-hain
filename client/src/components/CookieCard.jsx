@@ -23,11 +23,9 @@ export default function CookieCard({ cookie }) {
 
   const reRoutetoHolder = () => {
     // Correctly add gossipNetworkAddress to the newCookie object
-    let newCookie = { ...cookie, networkAddress: gossipNetworkAddress };
-    console.log(newCookie);
-    
+    let newCookie = { ...cookie };   
     //console.log("Address:",gossipNetworkAddress);
-    //navigate('/cookie-holder', { state: { cookieObject: newCookie } }); // Ensure cookie is correctly passed
+    navigate('/cookie-holder', { state: { cookieObject: newCookie } }); // Ensure cookie is correctly passed
   };
 
 
@@ -45,7 +43,7 @@ export default function CookieCard({ cookie }) {
           abi: OracularProtocolContract.abi,
           address: OracleProtocolAddress,
           functionName: 'sendCookieToGossipNetwork',
-          args: [BigInt(cookie.tokenId)+BigInt(1)]
+          args: [BigInt(cookie.tokenId)]
         });
       } catch (error) {
         console.error('Error sending cookie to Gossip Network:', error);

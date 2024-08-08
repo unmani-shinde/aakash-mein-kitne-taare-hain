@@ -20,10 +20,9 @@ export default function Network() {
 
         // Reduce the tokenId by 1 for each gossip cookie and find its corresponding uri from the cookies array
         sendCookieToGossipNetworks = sendCookieToGossipNetworks.map(gossipCookie => {
-          const matchedCookie = cookieMinteds.find(cookie => BigInt(cookie.tokenId) === BigInt(gossipCookie.tokenId) - BigInt(1));
+          const matchedCookie = cookieMinteds.find(cookie => BigInt(cookie.tokenId) === BigInt(gossipCookie.tokenId));
           return {
             ...gossipCookie,
-            tokenId: BigInt(gossipCookie.tokenId) - BigInt(1),
             uri: matchedCookie ? matchedCookie.uri : null,
           };
         });

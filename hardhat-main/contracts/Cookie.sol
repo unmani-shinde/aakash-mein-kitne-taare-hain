@@ -82,19 +82,15 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
     require(isGossipOn, "Please wait for the Cookie Owner to start the Gossip.");
 
     // Create a new Comment struct
-    Comment memory comment = Comment({
-        id: numComments,
-        commentBy: msg.sender, 
-        timestamp: block.timestamp,
-        content: _comment
-    });
 
-    // Store the comment in the mapping
-    gossipMap[numComments] = comment;
-
+     gossipMap[numComments] = Comment({
+            id: numComments,
+            commentBy: msg.sender, 
+            timestamp: block.timestamp,
+            content: _comment
+        });
     // Increment the number of comments
     numComments++;
-
     // Add to the gossip network
     addToGossipNetwork();
 }

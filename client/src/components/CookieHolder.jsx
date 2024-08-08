@@ -28,7 +28,7 @@ export default function CookieHolder() {
   // Fetch network details
   const { data: details } = useReadContract({
       abi: CookieContract.abi,
-      address: cookie.networkAddress,
+      address: cookie.gossipNetworkId,
       functionName: "spillTheTea",
       args: [],
        // Ensure contract function is only called when address is present
@@ -37,13 +37,15 @@ export default function CookieHolder() {
   useEffect(() => {
       if (details) {
           setNetworkDetails(details);
+          console.log("Network Details: ",details);
+          
       }
   }, [details]);
 
   // Fetch gossipers
   const { data: allGossipers } = useReadContract({
       abi: CookieContract.abi,
-      address: cookie.networkAddress,
+      address: cookie.gossipNetworkId,
       functionName: 'getAllGossipers',
       args: [],
      
@@ -51,14 +53,17 @@ export default function CookieHolder() {
 
   useEffect(() => {
       if (allGossipers) {
+          console.log("gossipers: ");
           setGossipers(allGossipers);
+          console.log(gossipers);
+          
       }
   }, [allGossipers]);
 
   // Fetch comments
   const { data: comments } = useReadContract({
       abi: CookieContract.abi,
-      address: cookie.networkAddress,
+      address: cookie.gossipNetworkId,
       functionName: "getAllComments",
       args: [],
      
@@ -66,16 +71,15 @@ export default function CookieHolder() {
 
   useEffect(() => {
       if (comments) {
+          console.log("comments:"); 
+          console.log(comments);
+              
           setAllComments(comments);
+          console.log(allComments);
+          
       }
   }, [comments]);
 
-  
-
-  useEffect(() => {
-      console.log(allComments);
-      console.log(gossipers);
-  }, [allComments, gossipers]);
 
     const handleAddingAComment = async () =>{
       const modal = document.getElementById('my_modal_7').showModal()
@@ -85,7 +89,7 @@ export default function CookieHolder() {
       }
       await writeContractAsync({
         abi:CookieContract.abi,
-        address:cookie.networkAddress,
+        address:cookie.gossipNetworkId,
         functionName:"addAComment",
         args:[myComment]
       })  
@@ -96,7 +100,7 @@ export default function CookieHolder() {
       if(modal){
         modal.showModal()
       }
-      if(networkDetails.current[1]){
+      if(networkDetails[1]){
         await handleEndGossip();
       }
       else{
@@ -107,7 +111,7 @@ export default function CookieHolder() {
     const handleStartGossip = async () =>{
       await writeContractAsync({
         abi: CookieContract.abi,
-        address:cookie.networkAddress,
+        address:cookie.gossipNetworkId,
         functionName:'startGossip',
         args:[]
       })
@@ -117,7 +121,7 @@ export default function CookieHolder() {
 
       await writeContractAsync({
         abi: CookieContract.abi,
-        address:cookie.networkAddress,
+        address:cookie.gossipNetworkId,
         functionName:'endGossip',
         args:[]
       })
@@ -135,14 +139,14 @@ export default function CookieHolder() {
 
         <div className="flex justify-between items-center bg-base-200 rounded mt-2 p-4">
         <p className="flex-grow">
-        <b>Network Address:</b>{cookieObj.networkAddress} 
+        <b>Network Address:</b>{cookieObj.gossipNetworkId} 
         
         
         
       </p>
 
-      {networkDetails.current && networkDetails.current.length > 0 && (
-  <button onClick={handleGossipSesh} className="btn btn-primary">{!networkDetails.current[1]?"Start Gossip":"End Gossip"}</button>
+      {networkDetails && networkDetails.length > 0 && (
+  <button onClick={handleGossipSesh} className="btn btn-primary">{!networkDetails[1]?"Start Gossip":"End Gossip"}</button>
 )}
 <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
   <div className="modal-box">
