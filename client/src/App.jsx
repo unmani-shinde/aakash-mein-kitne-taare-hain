@@ -6,6 +6,7 @@ import MintFortuneCookiePage from './pages/MintAFortuneCookie'
 import GossipNetworkPage from './pages/GossipNetwork'
 import FindMyMatchPage from './pages/MyMatchPage'
 import GardenSwaps from './pages/GardenSwapsPage'
+import CookieHolderPage from './pages/CookieHolderPage'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path='/the-gossip-network' element={<GossipNetworkPage/>}/>
         <Route path='/find-my-match' element={<FindMyMatchPage/>}/>
         <Route path='/garden-swaps' element={<GardenSwaps/>}/>
+        <Route path='/cookie-holder' element={<CookieHolderPage/>}/>
       </Routes>
     </Router>
     

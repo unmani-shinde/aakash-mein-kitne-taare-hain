@@ -12,6 +12,7 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
     address[] private gossipers;
     uint256 chainId;
     bool isGossipOn;
+    uint256 numComments;
 
     mapping (uint256 => string[]) private gossipMap;
 
@@ -19,13 +20,19 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
         cookieId = _id;
         cookieOwner =_owner;
         chainId = block.chainid;
+        numComments = 0;
     }
 
     event ISpeculate(address speculator,bool speculation);
 
+    function spillTheTea() external view returns(uint256,bool,uint256){
+        return(chainId,isGossipOn,numComments);
+    }
+
     function getSupply() external view returns (uint256) {
         return totalSupply();    
     }
+    
 
     modifier onlyOwner(){
         require(payable(address(msg.sender))==cookieOwner, "Only the Cookie Owner can start the Gossip");
@@ -66,17 +73,23 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
 
     function addAComment(string memory _comment) external  {
         require(isGossipOn,"Please wait for the Cookie Owner to start the Gossip.");
-        gossipMap[block.timestamp] = [string(abi.encodePacked("0x", Strings.toHexString(uint160(msg.sender), 20))),_comment];        
+        gossipMap[block.timestamp] = [string(abi.encodePacked("0x", Strings.toHexString(uint160(msg.sender), 20))),_comment];   
+        numComments++;     
     }
 
-    function getGossip() external view returns (string[][] memory) {
-        string[][] memory result = new string[][](gossipMap[block.timestamp].length);        
-        for(uint i=0;i<gossipMap[block.timestamp].length;i++){
-            result[i] = new string[](1);            
-            result[i][0] = gossipMap[block.timestamp][i];            
-        }        
-        return result;        
+   function getAllComments() external view returns (string[][] memory) {
+    string[][] memory result = new string[][](numComments);
+
+    for (uint256 i = 0; i < numComments; i++) {
+        
+        string[] memory commentAndTimestamp = gossipMap[i];       
+        //require(commentAndTimestamp.length == 2, "Invalid comment format");
+        result[i] = commentAndTimestamp;
     }
+
+    return result;
+}
+
 
     // The following functions are overrides required by Solidity.
     

@@ -10,9 +10,21 @@ const query = gql`
       tokenId
       tokenOwner
       transactionHash
+      uri
     }
   }
 `;
+
+const querySentToGossipNetwork = gql`
+{
+  cookieSentToGossips(first:1000){
+  tokenId
+  tokenOwner
+  gossipNetworkId
+ }
+}
+`;
+
 
 // Define the URL for the GraphQL endpoint
 //const url = 'https://api.studio.thegraph.com/query/85854/oracularprotocol/version/latest';
@@ -27,3 +39,14 @@ export async function FetchCookiesMinted() {
     throw error;
   }
 }
+
+export async function FetchCookiesSentToGossip() {
+  try {
+    const data = await request(arbitrumQuery, querySentToGossipNetwork);
+    return data;
+  } catch (error) {
+    console.error("Error fetching cookies:", error);
+    throw error;
+  }
+}
+

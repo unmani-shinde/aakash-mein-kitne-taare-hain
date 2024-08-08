@@ -1,1 +1,1 @@
-export const arbitrumQuery = 'https://api.studio.thegraph.com/query/85854/oracularonarbitrum/v0.0.1';
+export const arbitrumQuery = 'https://api.studio.thegraph.com/query/85854/oracularonarbitrumv2/v0.0.1';
