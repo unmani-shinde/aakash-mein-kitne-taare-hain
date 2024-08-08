@@ -40,7 +40,7 @@ export default function CookieCard({ cookie }) {
           abi: OracularProtocolContract.abi,
           address: OracleProtocolAddress,
           functionName: 'sendCookieToGossipNetwork',
-          args: [BigInt(cookie.tokenId) -BigInt(1)]
+          args: [BigInt(cookie.tokenId)+BigInt(1)]
         });
       } catch (error) {
         console.error('Error sending cookie to Gossip Network:', error);
