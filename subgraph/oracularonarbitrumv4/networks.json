@@ -1,8 +1,0 @@
-{
-  "arbitrum-sepolia": {
-    "OracularonArbitrumv4": {
-      "address": "0x9726d70B570d36aC643285483c192E715e1fe2E0",
-      "startBlock": 69800697
-    }
-  }
-}
