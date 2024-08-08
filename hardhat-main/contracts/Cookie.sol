@@ -14,7 +14,14 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
     bool isGossipOn;
     uint256 numComments;
 
-    mapping (uint256 => string[]) private gossipMap;
+    struct Comment{
+        uint256 id;
+        address commentBy;
+        uint256 timestamp;
+        string content;
+    }
+
+    mapping (uint256 => Comment) private gossipMap;
 
     constructor(uint256 _id, address payable _owner) ERC721("FortuneCookie", "FCO"){
         cookieId = _id;
@@ -71,24 +78,36 @@ contract Cookie is ERC721,ERC721Enumerable,IERC721Receiver{
         emit ISpeculate(msg.sender,_speculation);     
     }
 
-    function addAComment(string memory _comment) external  {
-        require(isGossipOn,"Please wait for the Cookie Owner to start the Gossip.");
-        gossipMap[block.timestamp] = [string(abi.encodePacked("0x", Strings.toHexString(uint160(msg.sender), 20))),_comment];   
-        numComments++;     
-    }
+    function addAComment(string memory _comment) external {
+    require(isGossipOn, "Please wait for the Cookie Owner to start the Gossip.");
 
-   function getAllComments() external view returns (string[][] memory) {
-    string[][] memory result = new string[][](numComments);
+    // Create a new Comment struct
+    Comment memory comment = Comment({
+        id: numComments,
+        commentBy: msg.sender, 
+        timestamp: block.timestamp,
+        content: _comment
+    });
 
-    for (uint256 i = 0; i < numComments; i++) {
-        
-        string[] memory commentAndTimestamp = gossipMap[i];       
-        //require(commentAndTimestamp.length == 2, "Invalid comment format");
-        result[i] = commentAndTimestamp;
-    }
+    // Store the comment in the mapping
+    gossipMap[numComments] = comment;
 
-    return result;
+    // Increment the number of comments
+    numComments++;
+
+    // Add to the gossip network
+    addToGossipNetwork();
 }
+
+
+   function getAllComments() external view returns (Comment[] memory) {
+    Comment[] memory comments = new Comment[](numComments);
+    for(uint256 i =1;i<=numComments;i++){
+        comments[i-1] = gossipMap[i];
+    }
+    return comments;
+   
+    }
 
 
     // The following functions are overrides required by Solidity.

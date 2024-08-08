@@ -18,13 +18,20 @@ export default function CookieHolder() {
   const { address } = useAccount();
   const { writeContractAsync, data, isPending, isError, isSuccess } = useWriteContract();
 
+  useEffect(() => {
+    if (cookieObj) {
+        setCookie(cookieObj);
+        console.log(cookieObj);
+        
+    }
+}, [cookieObj]);
   // Fetch network details
   const { data: details } = useReadContract({
       abi: CookieContract.abi,
       address: cookie.networkAddress,
       functionName: "spillTheTea",
       args: [],
-      enabled: !!cookie.networkAddress // Ensure contract function is only called when address is present
+       // Ensure contract function is only called when address is present
   });
 
   useEffect(() => {
@@ -39,7 +46,7 @@ export default function CookieHolder() {
       address: cookie.networkAddress,
       functionName: 'getAllGossipers',
       args: [],
-      enabled: !!cookie.networkAddress
+     
   });
 
   useEffect(() => {
@@ -54,7 +61,7 @@ export default function CookieHolder() {
       address: cookie.networkAddress,
       functionName: "getAllComments",
       args: [],
-      enabled: !!cookie.networkAddress
+     
   });
 
   useEffect(() => {
@@ -63,11 +70,7 @@ export default function CookieHolder() {
       }
   }, [comments]);
 
-  useEffect(() => {
-      if (cookieObj) {
-          setCookie(cookieObj);
-      }
-  }, [cookieObj]);
+  
 
   useEffect(() => {
       console.log(allComments);
@@ -124,7 +127,7 @@ export default function CookieHolder() {
     return(
         <>
         <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border">
-            <div className="collapse-title text-xl font-bold">Cookie #{cookieObj.tokenId}</div>
+            <div className="collapse-title text-xl font-bold">Cookie #{Number(cookieObj.tokenId)}</div>
             <div className="collapse-content">
                 <p>Cookie Creator: {cookieObj.tokenOwner}</p>
             </div>
@@ -132,7 +135,7 @@ export default function CookieHolder() {
 
         <div className="flex justify-between items-center bg-base-200 rounded mt-2 p-4">
         <p className="flex-grow">
-        <b>Network Address:</b>{cookie.networkAddress} 
+        <b>Network Address:</b>{cookieObj.networkAddress} 
         
         
         

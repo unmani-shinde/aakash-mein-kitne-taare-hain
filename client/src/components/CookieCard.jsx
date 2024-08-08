@@ -11,43 +11,46 @@ export default function CookieCard({ cookie }) {
     abi: OracularProtocolContract.abi,
     address: OracleProtocolAddress,
     functionName: 'getCookieMap',
-    args: [BigInt(cookie.tokenId)+BigInt(1)],
+    args: [BigInt(cookie.tokenId) > 0n ? BigInt(cookie.tokenId) - 1n : BigInt(cookie.tokenId)],
+
   });
 
+  
   // Convert gossipNetworkAddress to string for comparison
-  const addressString = gossipNetworkAddress ? gossipNetworkAddress.toString() : "";
+  
 
   const { writeContractAsync, data, isPending, isError, isSuccess } = useWriteContract();
 
   const reRoutetoHolder = () => {
     // Correctly add gossipNetworkAddress to the newCookie object
     let newCookie = { ...cookie, networkAddress: gossipNetworkAddress };
-    //console.log(newCookie);
+    console.log("Address:",gossipNetworkAddress);
     
-    navigate('/cookie-holder', { state: { cookieObject: newCookie } }); // Ensure cookie is correctly passed
+    //navigate('/cookie-holder', { state: { cookieObject: newCookie } }); // Ensure cookie is correctly passed
 };
 
 
   const handleSendCookietoNetwork = async () => {
-    if (addressString === "0x0000000000000000000000000000000000000000") {
-      const modal = document.getElementById('my_modal_5');
-      if (modal) {
-        modal.showModal();
-      }
+    console.log(gossipNetworkAddress);
+    // if (addressString === "0x0000000000000000000000000000000000000000") {
+    //   const modal = document.getElementById('my_modal_5');
+    //   if (modal) {
+    //     modal.showModal();
+    //   }
 
-      try {
-        await writeContractAsync({
-          abi: OracularProtocolContract.abi,
-          address: OracleProtocolAddress,
-          functionName: 'sendCookieToGossipNetwork',
-          args: [BigInt(cookie.tokenId)+BigInt(1)]
-        });
-      } catch (error) {
-        console.error('Error sending cookie to Gossip Network:', error);
-      }
-    } else {
-      reRoutetoHolder();
-    }
+    //   try {
+    //     await writeContractAsync({
+    //       abi: OracularProtocolContract.abi,
+    //       address: OracleProtocolAddress,
+    //       functionName: 'sendCookieToGossipNetwork',
+    //       args: [BigInt(cookie.tokenId)+BigInt(1)]
+    //     });
+    //   } catch (error) {
+    //     console.error('Error sending cookie to Gossip Network:', error);
+    //   }
+    // } else {
+    //   reRoutetoHolder();
+    // }
   };
 
   const fetchFromPinata = async (img_hash) => {
@@ -81,10 +84,6 @@ export default function CookieCard({ cookie }) {
     fetchImage();
   }, [cookie.uri]);
 
-  useEffect(()=>{
-    console.log(gossipNetworkAddress==="0x0000000000000000000000000000000000000000");
-    
-  },[])
 
   return (
     <div className="card bg-base-100 w-72 shadow-xl mb-4">
@@ -97,14 +96,14 @@ export default function CookieCard({ cookie }) {
       </figure>
 
       <div className="card-body">
-        <h2 className="card-title">Cookie #{cookie.tokenId}</h2>
+        <h2 className="card-title">Cookie #{Number(cookie.tokenId)}</h2>
         <p className="text-left whitespace-normal break-words">
           <b>Crafted By: </b>{cookie.tokenOwner}
         </p>
 
         <div className="card-actions justify-center">
           <button onClick={handleSendCookietoNetwork} className="btn btn-primary">
-            {addressString === "0x0000000000000000000000000000000000000000" ? "Start Gossip" : "View Gossip"}
+            {gossipNetworkAddress === "0x0000000000000000000000000000000000000000" ? "Start Gossip" : "View Gossip"}
           </button>
 
           <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">

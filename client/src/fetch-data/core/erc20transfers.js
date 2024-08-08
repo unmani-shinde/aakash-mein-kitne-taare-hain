@@ -33,35 +33,36 @@ export const handleERC20TransfersRetrieval = async (walletAddr) => {
 
         const data = await response.json();
 
-        // Iterate through transactions
-        for (const txn of data.result) {     
+        if(data.result){
+            for (const txn of data?.result) {     
 
-            const toAddressLower = txn.to?.toLowerCase();
-            const fromAddressLower = txn.from?.toLowerCase();
-            const walletAddrLower = walletAddr.toString().toLowerCase();
-            if(txn.from==="0x0000000000000000000000000000000000000000" && toAddressLower===walletAddrLower){
-                json_data.receive_erc20.push({
-                    "type": "receive_mint",
+                const toAddressLower = txn.to?.toLowerCase();
+                const fromAddressLower = txn.from?.toLowerCase();
+                const walletAddrLower = walletAddr.toString().toLowerCase();
+                if(txn.from==="0x0000000000000000000000000000000000000000" && toAddressLower===walletAddrLower){
+                    json_data.receive_erc20.push({
+                        "type": "receive_mint",
+                        "timestamp": txn.timeStamp,
+                        "hash":txn.hash
+                    });
+                }
+                else if(txn.from!=="0x0000000000000000000000000000000000000000" && toAddressLower===walletAddrLower){  
+                    json_data.receive_erc20.push({
+                    "type": "receive_transfer",
                     "timestamp": txn.timeStamp,
                     "hash":txn.hash
                 });
             }
-            else if(txn.from!=="0x0000000000000000000000000000000000000000" && toAddressLower===walletAddrLower){  
-                json_data.receive_erc20.push({
-                "type": "receive_transfer",
-                "timestamp": txn.timeStamp,
-                "hash":txn.hash
-            });
-        }
-            else if(fromAddressLower===walletAddrLower){
-                json_data.send_erc20.push({
-                    "type": "send",
-                    "timestamp": txn.timeStamp,
-                    "hash":txn.hash
-                });
-
+                else if(fromAddressLower===walletAddrLower){
+                    json_data.send_erc20.push({
+                        "type": "send",
+                        "timestamp": txn.timeStamp,
+                        "hash":txn.hash
+                    });
+    
+                }
             }
-        }
+        }      
 
         return json_data;
     } catch (error) {

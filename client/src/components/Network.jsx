@@ -4,34 +4,35 @@ import CookieCard from "./CookieCard";
 import { useAccount } from "wagmi";
 
 export default function Network() {
-  const [cookies, setCookies] = useState([]); // Ensure initial state is an array
+  const [cookies, setCookies] = useState([]); 
   const [gossipCookies, setGossipCookies] = useState([]);
   const { address } = useAccount();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        let response = await FetchCookiesMinted();
-        const cookieMinteds = response.cookieMinteds;
+        const responseMinted = await FetchCookiesMinted();
+        const cookieMinteds = responseMinted.cookieMinteds;
         setCookies(cookieMinteds);
 
-        response = await FetchCookiesSentToGossip();
-        let sendCookieToGossipNetworks = response.cookieSentToGossips;
+        const responseGossip = await FetchCookiesSentToGossip();
+        let sendCookieToGossipNetworks = responseGossip.cookieSentToGossips;
 
         // Reduce the tokenId by 1 for each gossip cookie and find its corresponding uri from the cookies array
         sendCookieToGossipNetworks = sendCookieToGossipNetworks.map(gossipCookie => {
-          const matchedCookie = cookieMinteds.find(cookie => cookie.tokenId === gossipCookie.tokenId - 1);
+          const matchedCookie = cookieMinteds.find(cookie => BigInt(cookie.tokenId) === BigInt(gossipCookie.tokenId) - BigInt(1));
           return {
             ...gossipCookie,
-            tokenId: gossipCookie.tokenId - 1,
-            uri: matchedCookie ? matchedCookie.uri : null, // Add the uri if found
+            tokenId: BigInt(gossipCookie.tokenId) - BigInt(1),
+            uri: matchedCookie ? matchedCookie.uri : null,
           };
         });
 
         setGossipCookies(sendCookieToGossipNetworks);
       } catch (error) {
-        console.log("There was an error: ", error);
-        setCookies([]); // Default to an empty array on error
+        console.error("There was an error:", error);
+        setCookies([]); 
+        setGossipCookies([]);
       }
     }
 
@@ -48,7 +49,7 @@ export default function Network() {
 
         {cookies.length > 0 ? (
           cookies
-            .filter(cookie => cookie.tokenOwner === address.toLowerCase()) // Filter cookies by address
+            .filter(cookie => cookie.tokenOwner.toLowerCase() === address.toLowerCase()) 
             .map((cookie, index) => <CookieCard key={index} cookie={cookie} />)
         ) : (
           <p>No cookies found.</p>
@@ -58,22 +59,19 @@ export default function Network() {
       <div className="divider lg:divider-horizontal">&</div>
 
       <div className="card bg-base-300 rounded-box flex-grow pt-8 lg:w-10/12">
-  <p className="font-bold text-lg">Cookies In the Gossip Network</p>
-  {gossipCookies.length > 0 ? (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {gossipCookies.map((cookie, index) => (
-        <div key={index} className="p-2">
-          <CookieCard cookie={cookie} />
-        </div>
-      ))}
-      
-    </div>
-  ) : (
-    <p>No cookies found.</p>
-  )}
-</div>
-
-
+        <p className="font-bold text-lg">Cookies In the Gossip Network</p>
+        {gossipCookies.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            {gossipCookies.map((cookie, index) => (
+              <div key={index} className="p-2">
+                <CookieCard cookie={cookie} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No cookies found.</p>
+        )}
+      </div>
     </div>
   );
 }

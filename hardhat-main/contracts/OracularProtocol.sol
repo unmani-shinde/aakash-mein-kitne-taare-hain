@@ -24,7 +24,7 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
 
     function mintMyCookie(string memory _metadata) external {
         address _to = address(msg.sender);
-        uint256 tokenId = _nextTokenId-1;
+        uint256 tokenId = _nextTokenId++;
         require(bytes(_metadata).length > 0, "Metadata is empty");
         Cookies[tokenId] = address(0x00);        
         safeMint(_to, _metadata);
