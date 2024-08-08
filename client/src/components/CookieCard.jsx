@@ -11,7 +11,7 @@ export default function CookieCard({ cookie }) {
     abi: OracularProtocolContract.abi,
     address: OracleProtocolAddress,
     functionName: 'getCookieMap',
-    args: [BigInt(cookie.tokenId) > 0n ? BigInt(cookie.tokenId) - 1n : BigInt(cookie.tokenId)],
+    args: [BigInt(cookie.tokenId)],
 
   });
 
@@ -24,33 +24,35 @@ export default function CookieCard({ cookie }) {
   const reRoutetoHolder = () => {
     // Correctly add gossipNetworkAddress to the newCookie object
     let newCookie = { ...cookie, networkAddress: gossipNetworkAddress };
-    console.log("Address:",gossipNetworkAddress);
+    console.log(newCookie);
     
+    //console.log("Address:",gossipNetworkAddress);
     //navigate('/cookie-holder', { state: { cookieObject: newCookie } }); // Ensure cookie is correctly passed
-};
+  };
 
 
   const handleSendCookietoNetwork = async () => {
-    console.log(gossipNetworkAddress);
-    // if (addressString === "0x0000000000000000000000000000000000000000") {
-    //   const modal = document.getElementById('my_modal_5');
-    //   if (modal) {
-    //     modal.showModal();
-    //   }
+    
+    // console.log("ID",BigInt(cookie.tokenId));
+    if (gossipNetworkAddress === "0x0000000000000000000000000000000000000000") {
+      const modal = document.getElementById('my_modal_5');
+      if (modal) {
+        modal.showModal();
+      }
 
-    //   try {
-    //     await writeContractAsync({
-    //       abi: OracularProtocolContract.abi,
-    //       address: OracleProtocolAddress,
-    //       functionName: 'sendCookieToGossipNetwork',
-    //       args: [BigInt(cookie.tokenId)+BigInt(1)]
-    //     });
-    //   } catch (error) {
-    //     console.error('Error sending cookie to Gossip Network:', error);
-    //   }
-    // } else {
-    //   reRoutetoHolder();
-    // }
+      try {
+        await writeContractAsync({
+          abi: OracularProtocolContract.abi,
+          address: OracleProtocolAddress,
+          functionName: 'sendCookieToGossipNetwork',
+          args: [BigInt(cookie.tokenId)+BigInt(1)]
+        });
+      } catch (error) {
+        console.error('Error sending cookie to Gossip Network:', error);
+      }
+    } else {
+      reRoutetoHolder();
+    }
   };
 
   const fetchFromPinata = async (img_hash) => {

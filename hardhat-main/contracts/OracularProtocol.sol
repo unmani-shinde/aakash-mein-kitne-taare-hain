@@ -8,12 +8,10 @@ import "@openzeppelin/contracts/utils/Create2.sol";
 import "contracts/Cookie.sol";
 
 contract OracularProtocol is ERC721, ERC721URIStorage {
-    uint256 private _nextTokenId;
-
+    
     constructor()
         ERC721("FortuneCookie", "FCO")
     {
-        _nextTokenId = 1;
     }
 
     mapping (uint256=>address) private Cookies; //token ID -> (associated contract address)
@@ -22,13 +20,15 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
     event CookieSentToGossip(address tokenOwner,uint256 tokenId, address gossipNetworkId);
     event ISpeculated(address speculator,uint256 speculationAmt, uint256 cookieId,bool speculation);
 
+    uint256 numTokens = 0;
+
     function mintMyCookie(string memory _metadata) external {
         address _to = address(msg.sender);
-        uint256 tokenId = _nextTokenId++;
         require(bytes(_metadata).length > 0, "Metadata is empty");
-        Cookies[tokenId] = address(0x00);        
+        Cookies[numTokens] = address(0x00);        
         safeMint(_to, _metadata);
-        emit CookieMinted(_to, tokenId,_metadata);
+        emit CookieMinted(_to, numTokens,_metadata);
+        numTokens++;
     }
 
     function sendCookieToGossipNetwork(uint256 cookieID) external {
@@ -56,7 +56,7 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
 
 
     function safeMint(address to, string memory uri) public {
-        uint256 tokenId = _nextTokenId++;
+        uint256 tokenId = numTokens;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
         
