@@ -18,8 +18,9 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
 
     mapping (uint256=>address) private Cookies; //token ID -> (associated contract address)
 
-    event CookieMinted(address tokenOwner, uint256 tokenId);
+    event CookieMinted(address tokenOwner, uint256 tokenId,string uri);
     event CookieSentToGossip(address tokenOwner,uint256 tokenId, address gossipNetworkId);
+    event ISpeculated(address speculator,uint256 speculationAmt, uint256 cookieId,bool speculation);
 
     function mintMyCookie(string memory _metadata) external {
         address _to = address(msg.sender);
@@ -27,7 +28,7 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
         require(bytes(_metadata).length > 0, "Metadata is empty");
         Cookies[tokenId] = address(0x00);        
         safeMint(_to, _metadata);
-        emit CookieMinted(_to, tokenId);
+        emit CookieMinted(_to, tokenId,_metadata);
     }
 
     function sendCookieToGossipNetwork(uint256 cookieID) external {
@@ -38,6 +39,10 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
         safeTransferFrom(msg.sender,gossipNetworkId, cookieID);
         Cookies[cookieID] = gossipNetworkId;
         emit CookieSentToGossip(msg.sender,cookieID,Cookies[cookieID]);
+    }
+
+    function iSpeculate(address speculator, uint256 speculationAmount, uint256 cookieId,bool speculaton ) external{
+        emit ISpeculated(speculator,speculationAmount,cookieId,speculaton);
     }
 
     // function sendCookieToMatch() external {
