@@ -1,1 +1,1 @@
-export default endpoint = "https://api.studio.thegraph.com/query/85854/oracularprotocol/version/latest";
+export const arbitrumQuery = 'https://api.studio.thegraph.com/query/85854/oracularonarbitrum/v0.0.1';

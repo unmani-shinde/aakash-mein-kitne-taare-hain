@@ -41,6 +41,10 @@ contract OracularProtocol is ERC721, ERC721URIStorage {
         emit CookieSentToGossip(msg.sender,cookieID,Cookies[cookieID]);
     }
 
+    function getCookieMap(uint256 tokenId) external view returns (address){
+        return Cookies[tokenId];
+    }
+
     function iSpeculate(address speculator, uint256 speculationAmount, uint256 cookieId,bool speculaton ) external{
         emit ISpeculated(speculator,speculationAmount,cookieId,speculaton);
     }
