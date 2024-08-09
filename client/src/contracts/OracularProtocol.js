@@ -6,3 +6,6 @@ export const OracleProtocolAddress = contractAddr["ProtocolModule#OracularProtoc
 
 import contractAddrCore from "../../../hardhat-main/ignition/deployments/chain-1115/deployed_addresses.json";
 export const OracleProtocolAddressCore = contractAddrCore["ProtocolModule#OracularProtocol"]
+
+import contractAddrAmoy from "../../../hardhat-main/ignition/deployments/chain-80002/deployed_addresses.json";
+export const OracleProtocolAddressAmoy = contractAddrAmoy["ProtocolModule#OracularProtocol"];

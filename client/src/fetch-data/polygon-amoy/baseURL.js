@@ -1,0 +1,1 @@
+export const baseUrl = "https://api-amoy.polygonscan.com/api"

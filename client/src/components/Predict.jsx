@@ -6,6 +6,8 @@ import { handleTransactionsRetrieval } from "../fetch-data/core/transactions";
 import { handleERC20TransfersRetrieval } from "../fetch-data/core/erc20transfers";
 import { handleTransactionsRetrieval as handleTransactionsFromArbitrumSepolia } from "../fetch-data/arbitrum-sepolia/transactions";
 import { handleERC20TransfersRetrieval as handleERC20TransfersRetrievalfromArbitrumSepolia } from "../fetch-data/arbitrum-sepolia/erc20transfers";
+import { handleTransactionsRetrieval as handleTransactionsFromPolygonAmoy} from "../fetch-data/polygon-amoy/transactions"
+import { handleERC20TransfersRetrieval as handleERC20TransfersRetrievalfromPolygonAmoy} from '../fetch-data/polygon-amoy/erc20transfers'
 import { usePrediction } from "../predictionContext";
 
 export default function Predict({ walletAddr }) {
@@ -106,12 +108,13 @@ export default function Predict({ walletAddr }) {
 
   const handlePredictionforPolyAmoy = async () => {
     setModalMessage(prevMessage => prevMessage + "<br />Fetching from Polygon Amoy...");
-    // Assuming you have similar functions for Polygon Amoy
-    // const json_data = await handlePolygonAmoyRetrieval(walletAddr);
-    // user_onchain_polygon_amoy_activity.transactions = json_data.transactions;
-    // user_onchain_polygon_amoy_activity.interactions = json_data.interactions;
-    // user_onchain_polygon_amoy_activity.recieve_erc20 = json_data.receive_erc20;
-    // user_onchain_polygon_amoy_activity.send_erc20 = json_data.send_erc20;
+    //Assuming you have similar functions for Polygon Amoy
+    const json_data_txns = await handleTransactionsFromPolygonAmoy(walletAddr);
+    const json_data_erc20 = await handleERC20TransfersRetrievalfromPolygonAmoy(walletAddr);
+    user_onchain_polygon_amoy_activity.transactions = json_data_txns.transactions;
+    user_onchain_polygon_amoy_activity.interactions = json_data_txns.interactions;
+    user_onchain_polygon_amoy_activity.recieve_erc20 = json_data_erc20.receive_erc20;
+    user_onchain_polygon_amoy_activity.send_erc20 = json_data_erc20.send_erc20;
     setModalMessage(prevMessage => prevMessage + "<br />Profile data successfully fetched from Polygon Amoy!");
   };
 
@@ -141,10 +144,11 @@ export default function Predict({ walletAddr }) {
         
         let prediction_arbitrum = await predict(user_onchain_arbi_sep_activity);
         let prediction_core = await predict(user_onchain_activity);
-        // let prediction_polygon = await predict(user_onchain_polygon_amoy_activity);
+        let prediction_polygon = await predict(user_onchain_polygon_amoy_activity);
         const chain_spec_predictions = {
             "Arbitrum Sepolia": prediction_arbitrum,
             "Core DAO Testnet": prediction_core,
+            "Polygon Amoy":prediction_polygon
         }
         let final_Prediction = await summarize(chain_spec_predictions);
         setPrediction(final_Prediction);

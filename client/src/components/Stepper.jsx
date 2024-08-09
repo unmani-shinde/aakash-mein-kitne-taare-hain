@@ -5,6 +5,7 @@ import Predict from "./Predict";
 import { useAccount,useWriteContract} from "wagmi";
 import { OracleProtocolAddressCore, OracularProtocolContract } from "../contracts/OracularProtocol";
 import { OracleProtocolAddress } from "../contracts/OracularProtocol";
+import { OracleProtocolAddressAmoy } from "../contracts/OracularProtocol";
 import handleFileUpload from "../pinata/handleFileUpload";
 
 // Step components
@@ -50,7 +51,7 @@ function MintCookie() {
 
         await writeContractAsync({
           abi: OracularProtocolContract.abi,
-          address: chainId===421614?OracleProtocolAddress:OracleProtocolAddressCore,
+          address: chainId===421614?OracleProtocolAddress:(chainId===80002?OracleProtocolAddressAmoy:OracleProtocolAddressCore),
           functionName: 'mintMyCookie',
           args:[metadata]
       })

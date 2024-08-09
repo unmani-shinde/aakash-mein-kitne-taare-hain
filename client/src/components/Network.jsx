@@ -1,9 +1,22 @@
 import { useEffect, useState } from "react";
 import { FetchCookiesMinted, FetchCookiesSentToGossip } from "../query/queryForCookiesMinted";
 import CookieCard from "./CookieCard";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { OracleProtocolAddress, OracleProtocolAddressCore } from "../contracts/OracularProtocol";
+import { CookieContract } from "../contracts/Cookie";
+import { ethers } from 'ethers';
 
+async function readContract(abi, address, functionName, args = []) {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(address, abi, provider);
+    const result = await contract[functionName](...args);
+    return result;
+  } catch (error) {
+    console.error('Error reading contract:', error);
+    throw error;
+  }
+}
 export default function Network() {
   const [cookies, setCookies] = useState([]); 
   const [gossipCookies, setGossipCookies] = useState([]);
@@ -45,34 +58,76 @@ export default function Network() {
           }
   
           const data = await response.json();
+          //console.log(data,'data');
           
-          const meow = data.result
-            .filter(txn => txn.from === "0x0000000000000000000000000000000000000000" && txn.to === address.toLowerCase())
-            .map(txn => ({
-              tokenId: txn.tokenID,
-              tokenOwner: txn.to,
-              gossipNetworkId: txn.blockNumber,
-            }));
+          const meow = [];
+
+if (data?.result) {
+  for (let i = 0; i < data.result.length; i++) {
+    const txn = data.result[i];
+    
+    // Check if the transaction meets the criteria
+    if (txn?.from === "0x0000000000000000000000000000000000000000" && txn?.to === address.toLowerCase()) {
+      const tokenID = txn?.tokenID ? parseInt(txn.tokenID) : null; // Ensure tokenID is correctly parsed
+      const tokenOwner = txn?.to || ''; // Ensure tokenOwner is set or default to empty string
+      const transactionHash = txn?.hash || ''; // Ensure transactionHash is set or default to empty string
+      
+      // Create the item object
+      const item = {
+        tokenId: tokenID,
+        tokenOwner: tokenOwner,
+        transactionHash: transactionHash,
+        uri: '' // Default uri
+      };
+
+      // Push the item to the meow array
+      meow.push(item);
+    }
+  }
+}
+
+console.log("Meow Logged:", meow);
+
+
+
+
+
+          
           setCookies(meow);
 
           const url2 = `${baseUrl}?${params2.toString()}`;
           const response2 = await fetch(url2);
-  
-          if (!response2.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
-          const newData = await response2.json();
-
-          const newMeow = newData.result
-          .filter(txn => txn.from === OracleProtocolAddressCore.toLowerCase() && txn.type === 'CREATE2')
-          .map(txn => ({
-            tokenId: 0,
-            tokenOwner: "",
-            gossipNetworkId: txn.to,
-          }));
           
-          setGossipCookies(newMeow); // Clear gossip cookies for this chain
+          if (!response2.ok) {
+            throw new Error(`HTTP error! status: ${response2.status}`);
+          }
+          
+          const newData = await response2.json();
+          
+          const newMeow = [];
+          
+          for (const txn of newData.result) {
+            if (txn.from === OracleProtocolAddressCore.toLowerCase() && txn.type === 'CREATE2') {
+              try {
+                const details = await readContract(CookieContract.abi, txn.to, 'spillTheTea', []);
+
+                newMeow.push({
+                  tokenId: details?.result?.tokenId || null,
+                  tokenOwner: details?.result?.tokenOwner || '',
+                  gossipNetworkId: txn.to,
+                });
+                
+          
+                // Create the object and add it to the array
+                
+              } catch (error) {
+                console.error("Error reading contract data:", error);
+              }
+            }
+          }
+          
+          setGossipCookies(newMeow); // Set gossip cookies for this chain
+          
         } else if (chainId === 421614) {
           const responseMinted = await FetchCookiesMinted();
           const cookieMinteds = responseMinted.cookieMinteds;
@@ -97,7 +152,7 @@ export default function Network() {
     }
   
     fetchData();
-  }, [chainId, address]); // Added dependencies to the useEffect to re-run when chainId or address changes
+  }, []); // Added dependencies to the useEffect to re-run when chainId or address changes
   
 
   return (
@@ -110,7 +165,7 @@ export default function Network() {
 
         {cookies.length > 0 ? (
           cookies
-            .filter(cookie => cookie.tokenOwner.toLowerCase() === address.toLowerCase()) 
+            .filter(cookie => cookie.tokenOwner?.toLowerCase() === address.toLowerCase()) 
             .map((cookie, index) => <CookieCard key={index} cookie={cookie} />)
         ) : (
           <p>No cookies found.</p>

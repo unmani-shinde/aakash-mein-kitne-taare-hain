@@ -1,3 +1,4 @@
+import MatchMe from "../components/MatchMe";
 import NavigationBar from "../components/NavigationBar";
 
 export default function FindMyMatchPage(){
@@ -7,8 +8,9 @@ export default function FindMyMatchPage(){
         <>
     <NavigationBar/>
     <div className="h-72 flex-grow grid place-content-center items-center">
-    
-    <span className="loading loading-spinner loading-lg"></span>
+    <h1 className="pb-4 text-5xl font-bold text-center">Our Users: Match Me If You Can!</h1>
+    <p className="mb-4 text-lg">Meanwhile us, Barney Stinson style: Challenge Accepted!</p>
+    <MatchMe/>
         
     </div>
     

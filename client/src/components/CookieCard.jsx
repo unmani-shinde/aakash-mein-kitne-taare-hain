@@ -9,11 +9,14 @@ export default function CookieCard({ cookie }) {
   const navigate = useNavigate();
   const { chainId } = useAccount();
 
+  console.log(cookie);
+  
+
   const { data: baseURIForCore } = useReadContract({
     abi:OracularProtocolContract.abi,
     address:OracleProtocolAddressCore,
     functionName:'tokenURI',
-    args:[BigInt(cookie.tokenId)]
+    args:[BigInt(cookie?.tokenId)]
   })
 
   
@@ -28,17 +31,19 @@ export default function CookieCard({ cookie }) {
     functionName: 'getCookieMap',
     args: [BigInt(cookie.tokenId)],
 
-  });
+  }); 
 
-  const { data: details } = useReadContract({
-    abi:CookieContract.abi,
-    address:gossipNetworkAddress,
-    functionName:'totalSupply',
-    args:[]
-  })
+  // const { data: details } = useReadContract({
+  //   abi:CookieContract.abi,
+  //   address:gossipNetworkAddress,
+  //   functionName:'spillTheTea',
+  //   args:[]
+  // })
 
-  console.log(details);
-  
+  // if(chainId===1115){
+  //   cookie.tokenId = details?.cookieId;
+  //   cookie.tokenOwner = details?.tokenOwner;
+  // }
 
   
   // Convert gossipNetworkAddress to string for comparison
