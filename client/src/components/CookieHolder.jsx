@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom"
 import { useAccount } from "wagmi";
 import { useReadContract, useWriteContract } from "wagmi";
 import { CookieContract } from "../contracts/Cookie"
+import Web3 from 'web3'
 
 export default function CookieHolder() {
 
@@ -15,6 +16,8 @@ export default function CookieHolder() {
   const [networkDetails, setNetworkDetails] = useState({});
   const [gossipers, setGossipers] = useState([]);
   const [allComments, setAllComments] = useState([]);
+  const [speculation,setSpeculation] = useState('');
+  const [speculationAmount,setSpeculationAmount] = useState('');
   const { address } = useAccount();
   const { writeContractAsync, data, isPending, isError, isSuccess } = useWriteContract();
 
@@ -34,6 +37,7 @@ export default function CookieHolder() {
        // Ensure contract function is only called when address is present
   });
 
+  
   useEffect(() => {
       if (details) {
           setNetworkDetails(details);
@@ -117,6 +121,24 @@ export default function CookieHolder() {
       })
     }
 
+    const handleSpeculation = async () =>{
+
+      const speculation_amount = Web3.utils.toWei(speculationAmount,"ether");
+
+      const modal = document.getElementById('my_modal_7').showModal()
+      if(modal){
+        modal.showModal()
+      }
+
+      writeContractAsync({
+        abi: CookieContract.abi,
+        address:cookie.gossipNetworkId,
+        functionName:'speculateTrueorFalse',
+        args:[speculation],
+        value:speculation_amount
+      })
+    }
+
     const handleEndGossip = async () =>{
 
       await writeContractAsync({
@@ -127,6 +149,11 @@ export default function CookieHolder() {
       })
 
     }
+
+    const handleSelectChange = (event) => {
+      const value = event.target.value === 'true';
+      setSpeculation(value);
+  };
 
     return(
         <>
@@ -177,6 +204,48 @@ export default function CookieHolder() {
                 <div style={{height:"450px"}} className="card bg-base-300 rounded-box grid flex-grow">
 
                 <p className="py-1 font-semibold">- SPECULATIONS - </p>
+                <h2 style={{marginBottom:"-6vh"}} class="text-md">Take a risk, make a speculation!</h2>
+                <div className="overflow-y-auto h-full flex flex-col items-center">
+                <select onChange={handleSelectChange}
+                 className="select select-bordered w-full max-w-xs">
+                      <option disabled selected>What do you think of the Prediction?</option>
+                      <option value='true' >Yes, this is happening!</option>
+                      <option value='false'>Hell naw!</option>
+                </select>
+                
+                <input type="text" onChange={(e)=>{setSpeculationAmount(e.target.value)}} placeholder="Enter Speculation Amount" className="input input-bordered w-full max-w-xs mt-8" />
+                <button 
+                style={{ fontWeight: '700' }} 
+                className="button-56 mt-4" 
+                role="button" onClick={handleSpeculation}>Send Speculation✨</button>
+
+
+                <dialog id="my_modal_7" className="modal modal-bottom sm:modal-middle">
+  <div className="modal-box">
+  <h3 className="font-bold text-lg">
+  Placing your Speculation
+</h3>
+
+    {isPending && !isError && !isSuccess && <p className="py-4">Transaction in Progress</p>}
+              {!isPending && isError && !isSuccess && <p className="py-4 text-red-900">Transaction Failed</p>}
+              {!isPending && !isError && isSuccess && (
+                <p className="py-4 text-green-700 whitespace-normal break-words">
+                  Transaction Successful! Hash: {data}
+                </p>
+              )}
+    <div className="modal-action">
+      <form method="dialog">
+        {/* if there is a button in form, it will close the modal */}
+        <button className="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+
+                </div>
+
+                
 
 
 
@@ -193,25 +262,38 @@ export default function CookieHolder() {
                 <div style={{height:"450px"}} className="card bg-base-300 rounded-box grid flex-grow">
   <p className="py-1 font-semibold">- COMMENTS - </p>
   <div className="overflow-y-auto h-full flex flex-col">
-    <div className="chat chat-start">
-      <div className="chat-image avatar">
-        <div className="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS chat bubble component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+
+  {allComments.map((comment, index) => {
+    // Convert Unix timestamp to JavaScript Date object
+    const date = new Date(Number(comment.timestamp) * 1000); // Multiply by 1000 to convert seconds to milliseconds
+
+    // Format the date to a readable string
+    const formattedDate = date.toLocaleString(); 
+
+    return (
+        <div key={index} className={`chat ${comment.commentBy.toLowerCase() === address.toLowerCase()? 'chat-end' : 'chat-start'}`}>
+            <div className="chat-image avatar">
+                <div className="w-10 rounded-full">
+                    <img
+                        alt="Chat avatar"
+                        src="https://png.pngtree.com/png-clipart/20200224/original/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_5247852.jpg" 
+                    />
+                </div>
+            </div>
+            <div className="chat-header">
+                {comment.commentBy} {/* Display dynamic owner */}
+                <time className="text-xs opacity-50">{formattedDate}</time> {/* Use formatted timestamp */}
+            </div>
+            <div className="chat-bubble">{comment.content}</div> {/* Use dynamic message */}
+            <div className="chat-footer opacity-50">{Number(comment.id)}</div> {/* Display dynamic comment ID */}
         </div>
-      </div>
-      <div className="chat-header">
-        Obi-Wan Kenobi
-        <time className="text-xs opacity-50">12:45</time>
-      </div>
-      <div className="chat-bubble">You were the Chosen One!</div>
-      <div className="chat-footer opacity-50">Delivered</div>
-    </div>
+    );
+})}
 
 
 
-    <div className="chat chat-end">
+
+    {/* <div className="chat chat-end">
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
@@ -225,7 +307,7 @@ export default function CookieHolder() {
       </div>
       <div className="chat-bubble">I hate you!</div>
       <div className="chat-footer opacity-50">Seen at 12:46</div>
-    </div>
+    </div> */}
   </div>
 
   <div className="w-full flex flex-col justify-center items-center">

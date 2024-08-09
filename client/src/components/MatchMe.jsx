@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { FetchCookiesMinted } from "../query/queryForCookiesMinted";
 import { useAccount } from "wagmi";
+import { OracleProtocolAddressCore } from "../contracts/OracularProtocol";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default function MatchMe() {
@@ -11,6 +12,8 @@ export default function MatchMe() {
     const [matchMade, setMatchMade] = useState('');
 
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+
+    const baseUrl = "https://api.test.btcs.network/api"
 
     const match = async (otherCookies, myCookies) => {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -39,24 +42,69 @@ For the most similar user address, provide two short sentences in simple languag
 
     useEffect(() => {
         const fetchData = async () => {
-            if (chainId === 421614) {
-                setLoading2(true);
-                try {
-                    const responseMinted = await FetchCookiesMinted();
-                    const cookieMinteds = responseMinted.cookieMinteds;
-                    setCookies(cookieMinteds);
-                } catch (error) {
-                    console.error("Error fetching cookies:", error);
-                } finally {
+            try {
+                if (chainId === 421614 || chainId === 80002) {
+                    setLoading2(true);
+                    const responseMinted = await FetchCookiesMinted(chainId);
+                    setCookies(responseMinted.cookieMinteds);
+                } else if (chainId === 1115) {
+                    const params = new URLSearchParams({
+                        module: 'account',
+                        action: 'tokennfttx',
+                        contractaddress: OracleProtocolAddressCore,
+                        startblock: '0',
+                        endblock: '99999999',
+                        sort: 'desc', // Fixing the sort order to 'desc'
+                        offset: '100',
+                        apikey: import.meta.env.VITE_CORE_API_KEY,
+                    });
+
+                    const url = `${baseUrl}?${params.toString()}`;
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    const meow = [];
+
+                    if (data?.result) {
+                        for (const txn of data.result) {
+                            // Check if the transaction meets the criteria
+                            if (txn?.from === "0x0000000000000000000000000000000000000000" && txn?.to === address.toLowerCase()) {
+                                const tokenID = txn?.tokenID ? parseInt(txn.tokenID) : null; // Ensure tokenID is correctly parsed
+                                const tokenOwner = txn?.to || ''; // Ensure tokenOwner is set or default to empty string
+                                const transactionHash = txn?.hash || ''; // Ensure transactionHash is set or default to empty string
+
+                                // Create the item object
+                                const item = {
+                                    tokenId: tokenID,
+                                    tokenOwner: tokenOwner,
+                                    transactionHash: transactionHash,
+                                    uri: '' // Default uri
+                                };
+
+                                // Push the item to the meow array
+                                meow.push(item);
+                            }
+                        }
+                    }
+
+                    setCookies(meow);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                {
                     setLoading2(false);
                 }
-            } else {
-                setCookies([]);
             }
         };
 
         fetchData();
-    }, [chainId]); // Include chainId in the dependency array
+    }, [chainId, address]); // Include chainId and address in the dependency array
 
     const fetchFromPinata = async (img_hash) => {
         let baseURL = `${import.meta.env.VITE_PINATA_GATEWAY}/${img_hash}?pinataGatewayToken=${import.meta.env.VITE_PINATA_GATEWAY_ACCESS_TOKEN}`;

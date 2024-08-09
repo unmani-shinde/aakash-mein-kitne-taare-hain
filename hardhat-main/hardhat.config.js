@@ -26,7 +26,7 @@ module.exports = {
     },
     polygonAmoy:{
       url:`https://polygon-amoy-bor-rpc.publicnode.com`,
-      accounts:["ffc9e8f09b0cf6ddf10872ca0a08184108b760b8c70c21a6befbc789b31d35db"],
+      accounts:[process.env.DEPLOYER_PRIVATE_KEY_TWO.toString()],
       chainId:80002
     }
   },

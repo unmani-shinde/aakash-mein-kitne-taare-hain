@@ -1,1 +1,3 @@
 export const arbitrumQuery = 'https://api.studio.thegraph.com/query/85854/oracularonarbitrumv7/v0.0.1';
+
+export const amoyQuery = 'https://api.studio.thegraph.com/query/85854/oracularonpolygonv1/v0.0.1';

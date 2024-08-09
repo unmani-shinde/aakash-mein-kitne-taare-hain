@@ -128,12 +128,12 @@ console.log("Meow Logged:", meow);
           
           setGossipCookies(newMeow); // Set gossip cookies for this chain
           
-        } else if (chainId === 421614) {
-          const responseMinted = await FetchCookiesMinted();
+        } else if (chainId === 421614 || chainId === 80002) {
+          const responseMinted = await FetchCookiesMinted(chainId);
           const cookieMinteds = responseMinted.cookieMinteds;
           setCookies(cookieMinteds);
   
-          const responseGossip = await FetchCookiesSentToGossip();
+          const responseGossip = await FetchCookiesSentToGossip(chainId);
           const sendCookieToGossipNetworks = responseGossip.cookieSentToGossips.map(gossipCookie => {
             const matchedCookie = cookieMinteds.find(cookie => BigInt(cookie.tokenId) === BigInt(gossipCookie.tokenId));
             return {

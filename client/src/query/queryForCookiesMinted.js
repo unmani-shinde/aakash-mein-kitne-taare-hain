@@ -1,7 +1,8 @@
 // queryFunctions.js
 
 import { gql, request } from 'graphql-request';
-import { arbitrumQuery } from './subgraphEndPoint';
+import { arbitrumQuery, amoyQuery } from './subgraphEndPoint';
+
 
 // Define the GraphQL query
 const query = gql`
@@ -24,15 +25,13 @@ const querySentToGossipNetwork = gql`
  }
 }
 `;
-
-
-// Define the URL for the GraphQL endpoint
-//const url = 'https://api.studio.thegraph.com/query/85854/oracularprotocol/version/latest';
-
 // Export the query function
-export async function FetchCookiesMinted() {
+export async function FetchCookiesMinted(chainId) {
+  
+  const url = chainId === 421614 ? arbitrumQuery : amoyQuery;
+
   try {
-    const data = await request(arbitrumQuery, query);
+    const data = await request(url, query);
     return data;
   } catch (error) {
     console.error("Error fetching cookies:", error);
@@ -40,9 +39,12 @@ export async function FetchCookiesMinted() {
   }
 }
 
-export async function FetchCookiesSentToGossip() {
+export async function FetchCookiesSentToGossip(chainId) {
+  
+  const url = chainId === 421614 ? arbitrumQuery : amoyQuery;
+
   try {
-    const data = await request(arbitrumQuery, querySentToGossipNetwork);
+    const data = await request(url, querySentToGossipNetwork);
     return data;
   } catch (error) {
     console.error("Error fetching cookies:", error);
