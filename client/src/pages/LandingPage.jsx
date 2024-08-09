@@ -1,14 +1,10 @@
-import { ConnectKitButton } from "connectkit";
-import { useAccount } from "wagmi";
-import Predict from "../components/Predict";
-import HelloWorld from "../components/HelloWorldTest";
-import CookieMint from "../components/CookieMint";
+
+
 import NavigationBar from "../components/NavigationBar";
 import Hero from "../components/Hero";
-// import SIWE from "../components/SIWE";
 
 export default function Home() {
-    const account = useAccount()
+    
 
     return(<>
         <NavigationBar/>
