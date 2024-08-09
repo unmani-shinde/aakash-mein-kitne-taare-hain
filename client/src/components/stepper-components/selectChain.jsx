@@ -48,8 +48,8 @@ export default function SelectChain({ isForMint }) {
       <li className="text-xl font-bold mb-4">
         Select a Chain to {isForMint ? "Mint your Cookie" : "Query your Activity"}
       </li>
-      {isForMint && selectedChain.chainId!==account.chainId && <button onClick={() => switchChain({ chainId: selectedChain.chainId })}>
-          <p className="text-lg">Switch to Selected Chain</p>
+      {isForMint && selectedChain.chainId!==account.chainId && <button style={{cursor:'pointer'}} onClick={() => switchChain({ chainId: selectedChain.chainId })}>
+          <p className="text-lg"><u>Click to Switch to Selected Chain</u></p>
         </button>}
       {chainDetails.map((chain, index) => (
         <li key={index}>
@@ -74,6 +74,7 @@ export default function SelectChain({ isForMint }) {
           </div>
         </li>
       ))}
+      <li className="text-center"><a href="/garden-swaps">PS. Bitcoin Holder here!</a></li>
     </ul>
   );
 }

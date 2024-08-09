@@ -186,7 +186,7 @@ const Swap: React.FC<SwapAndAddressComponentProps> = ({
     changeAmount("WBTC", "");
 
     await garden.swap(
-      Assets.ethereum_sepolia.WBTC,
+      Assets.ethereum_arbitrum.WBTC,
       Assets.bitcoin_testnet.BTC,
       sendAmount,
       recieveAmount

@@ -22,11 +22,11 @@ type EvmWalletAction = {
 };
 
 const networkConfig = {
-  chainId: "0xaa36a7",
-  chainName: "Sepolia",
-  rpcUrls: ["https://sepolia.infura.io/v3/"],
+  chainId: "0x66eee",
+  chainName: "Arbitrum Sepolia",
+  rpcUrls: ["https://arbitrum-sepolia.blockpi.network/v1/rpc/public"],
   nativeCurrency: {
-    symbol: "SepoliaETH",
+    symbol: "ETH",
     decimals: 18,
   },
 };
@@ -40,7 +40,7 @@ const useMetaMaskStore = create<EvmWalletState & EvmWalletAction>((set) => ({
       let network = await provider.getNetwork();
       console.log("network: ",network);
       
-      if (network.chainId !== 11155111n) {
+      if (network.chainId !== 421614n) {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
           params: [networkConfig],
@@ -142,13 +142,13 @@ const useGardenSetup = () => {
 
       const wallets = {
         [Chains.bitcoin_testnet]: bitcoinWallet,
-        [Chains.ethereum_sepolia]: evmWallet,
+        [Chains.ethereum_arbitrum]: evmWallet,
         
       };
 
       const garden = new GardenJS(orderbook, wallets);
 
-      setGarden(garden, wallets[Chains.bitcoin_testnet],wallets[Chains.ethereum_sepolia]);
+      setGarden(garden, wallets[Chains.bitcoin_testnet],wallets[Chains.ethereum_arbitrum]);
     })();
   }, [evmProvider, setGarden]);
 };
