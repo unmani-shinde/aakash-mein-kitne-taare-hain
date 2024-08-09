@@ -9,7 +9,7 @@ export default function Hero() {
         <div className="hero bg-base-100 flex flex-col pt-32 justify-center">
   <div className="hero-content text-center">
     <div className="max-w-screen">
-      <h1 className="text-5xl font-bold tracking-wide">Make your horoscope as reliable as your crypto wallet(s).</h1>
+      <h1 className="text-5xl font-bold tracking-wide">Make your cosmic profile as reliable as your crypto wallet(s).</h1>
       <p className="py-6 text-xl">
       Oracular Protocol is a cosmic solution that’s as fun as it is futuristic. Let your on-chain activity speak for you. We're here to make sure no one can fake their stars – or their blockchain history! Trade your Fortunes, or meet the One, at the click of a button!
       </p>
